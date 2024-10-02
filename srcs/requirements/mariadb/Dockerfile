@@ -1,11 +1,9 @@
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && \
+	apt-get install -y mariadb-server && \
+	apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y mariadb-server
+COPY --chmod=+x ./conf/mdb-conf.sh /mdb-conf.sh
 
-COPY ./conf/mdb-conf.sh /mdb-conf.sh
-
-RUN chmod +x /mdb-conf.sh
-
-ENTRYPOINT ["./mdb-conf.sh"]
+CMD ["/mdb-conf.sh"]
