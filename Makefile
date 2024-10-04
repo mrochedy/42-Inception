@@ -1,24 +1,27 @@
-WP_DATA = /home/data/wordpress
-DB_DATA = /home/data/mariadb
+CMD = docker-compose
+FLAGS = -f
+COMPOSE_PATH = ./srcs/docker-compose.yml
+
+WP_DATA = /home/$(USER)/data/wordpress
+DB_DATA = /home/$(USER)/data/mariadb
 
 all: up
 
 up: build
-	@mkdir -p $(WP_DATA)
-	@mkdir -p $(DB_DATA)
-	docker-compose -f ./docker-compose.yml up -d
+	@mkdir -p $(WP_DATA) $(DB_DATA)
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) up -d
 
 down:
-	docker-compose -f ./docker-compose.yml down
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) down
 
 stop:
-	docker-compose -f ./docker-compose.yml stop
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) stop
 
 start:
-	docker-compose -f ./docker-compose.yml start
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) start
 
 build:
-	docker-compose -f ./docker-compose.yml build
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) build
 
 clean:
 	@docker stop $$(docker ps -qa) || true
@@ -26,10 +29,11 @@ clean:
 	@docker rmi -f $$(docker images -qa) || true
 	@docker volume rm $$(docker volume ls -q) || true
 	@docker network rm $$(docker network ls -q) || true
-	@rm -rf $(WP_DATA) || true
-	@rm -rf $(DB_DATA) || true
+	@rm -rf $(WP_DATA) $(DB_DATA)
 
 re: clean up
 
 prune: clean
 	@docker system prune -a --volumes -f
+
+.PHONY: all up down stop start build clean re prune

@@ -4,6 +4,8 @@ RUN apt-get update && \
 	apt-get install -y mariadb-server && \
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY --chmod=+x ./conf/mdb-conf.sh /mdb-conf.sh
+COPY ./conf/mariadb-config.sh /mariadb-config.sh
 
-CMD ["/mdb-conf.sh"]
+RUN chmod +x /mariadb-config.sh
+
+ENTRYPOINT ["bash", "/mariadb-config.sh"]

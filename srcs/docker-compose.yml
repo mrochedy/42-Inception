@@ -4,7 +4,7 @@ services:
   mariadb:
     image: mariadb:user
     container_name: mariadb
-    build: ./mariadb
+    build: ./requirements/mariadb
     volumes:
       - mariadb:/var/lib/mysql
     env_file :
@@ -15,7 +15,7 @@ services:
   nginx:
     image: nginx:user
     container_name: nginx
-    build: ./nginx
+    build: ./requirements/nginx
     ports:
       - "443:443"
     depends_on:
@@ -28,7 +28,7 @@ services:
   wordpress:
     image: wordpress:user
     container_name: wordpress
-    build: ./wordpress
+    build: ./requirements/wordpress
     depends_on:
       - mariadb
     volumes:
@@ -44,14 +44,14 @@ volumes:
     name: mariadb
     driver: local
     driver_opts:
-      device: /home/data/mariadb
+      device: /home/${USER}/data/mariadb
       o : bind
       type : none
   wordpress:
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/data/wordpress
+      device: /home/${USER}/data/wordpress
       o : bind
       type : none
 

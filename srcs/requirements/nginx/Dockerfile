@@ -10,4 +10,4 @@ RUN apt-get update && \
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
