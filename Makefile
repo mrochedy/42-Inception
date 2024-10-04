@@ -23,17 +23,14 @@ start:
 build:
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) build
 
+logs:
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) logs
+
 clean:
-	@docker stop $$(docker ps -qa) || true
-	@docker rm $$(docker ps -qa) || true
-	@docker rmi -f $$(docker images -qa) || true
-	@docker volume rm $$(docker volume ls -q) || true
-	@docker network rm $$(docker network ls -q) || true
-	@rm -rf $(WP_DATA) $(DB_DATA)
+	@$(CMD) $(FLAGS) $(COMPOSE_PATH) down --volumes --remove-orphans
+	@docker rmi -f mariadb:user nginx:user wordpress:user || true
+	@sudo rm -rf $(WP_DATA) $(DB_DATA)
 
 re: clean up
 
-prune: clean
-	@docker system prune -a --volumes -f
-
-.PHONY: all up down stop start build clean re prune
+.PHONY: all up down stop start build logs clean re

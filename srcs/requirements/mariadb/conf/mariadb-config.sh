@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [[ -z "$DB_NAME" || -z "$DB_USER" || -z "$DB_PASSWD" || -z "$DB_ROOT_PASSWD" ]]; then
 	echo "One or more environment variables are not defined."
 	exit 1
