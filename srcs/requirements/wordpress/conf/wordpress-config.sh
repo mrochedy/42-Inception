@@ -47,6 +47,10 @@ wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --d
 wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_A_NAME" --admin_password="$WP_A_PASSWD" --admin_email="$WP_A_EMAIL" --allow-root
 wp user create "$WP_U_NAME" "$WP_U_EMAIL" --user_pass="$WP_U_PASSWD" --role="$WP_U_ROLE" --allow-root
 
+wp plugin install redis-cache --activate --allow-root
+wp config set WP_REDIS_HOST "redis" --allow-root
+wp redis enable --allow-root
+
 if grep -q '/run/php/php7.4-fpm.sock' /etc/php/7.4/fpm/pool.d/www.conf; then
 	sed -i 's@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
 fi

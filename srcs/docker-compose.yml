@@ -11,7 +11,7 @@ services:
       - .env
     networks :
       - inception
-    restart: always
+    restart: on-failure
   nginx:
     image: nginx:user
     container_name: nginx
@@ -24,7 +24,7 @@ services:
       - wordpress:/var/www/wordpress
     networks:
       - inception
-    restart: always
+    restart: on-failure
   wordpress:
     image: wordpress:user
     container_name: wordpress
@@ -37,7 +37,16 @@ services:
       - .env
     networks:
       - inception
-    restart: always
+    restart: on-failure
+  redis:
+    image: redis:user
+    container_name: redis
+    build: ./requirements/bonus/redis
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    restart: on-failure
 
 volumes:
   mariadb:
