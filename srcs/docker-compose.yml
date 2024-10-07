@@ -47,6 +47,22 @@ services:
     networks:
       - inception
     restart: on-failure
+  ftp:
+    image: ftp:user
+    container_name: ftp
+    build: ./requirements/bonus/ftp
+    depends_on:
+      - wordpress
+    ports:
+      - "21:21"
+      - "8130-8140:8130-8140"
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: on-failure
 
 volumes:
   mariadb:
