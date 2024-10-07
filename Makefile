@@ -2,7 +2,7 @@ CMD = docker-compose
 FLAGS = -f
 COMPOSE_PATH = ./srcs/docker-compose.yml
 
-WP_DATA = /home/$(USER)/data/wordpress
+WP_DATA = /home/$(USER)/data/web
 DB_DATA = /home/$(USER)/data/mariadb
 
 all: up
@@ -28,7 +28,7 @@ logs:
 
 clean:
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) down --volumes --remove-orphans
-	@docker rmi -f mariadb:user nginx:user wordpress:user redis:user ftp:user || true
+	@docker rmi -f mariadb:user nginx:user wordpress:user redis:user ftp:user staticpage:user || true
 	@sudo rm -rf $(WP_DATA) $(DB_DATA)
 
 re: clean up

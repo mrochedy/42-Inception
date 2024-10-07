@@ -15,9 +15,9 @@ fi
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
-cd /var/www/wordpress
-chmod -R 755 /var/www/wordpress/
-chown -R www-data:www-data /var/www/wordpress
+cd /var/www/web
+chmod -R 755 /var/www/web/
+chown -R www-data:www-data /var/www/web
 
 ping_mariadb_container() {
 	nc -zv mariadb 3306 > /dev/null

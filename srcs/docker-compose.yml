@@ -21,7 +21,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/web
     networks:
       - inception
     restart: on-failure
@@ -32,7 +32,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/web
     env_file :
       - .env
     networks:
@@ -57,12 +57,22 @@ services:
       - "21:21"
       - "8130-8140:8130-8140"
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress:/var/www/web
     env_file:
       - .env
     networks:
       - inception
     restart: on-failure
+  staticpage:
+    image: staticpage:user
+    container_name: staticpage
+    build: ./requirements/bonus/staticpage/
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/var/www/web
+    networks:
+      - inception
 
 volumes:
   mariadb:
@@ -76,7 +86,7 @@ volumes:
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/${USER}/data/wordpress
+      device: /home/${USER}/data/web
       o : bind
       type : none
 
