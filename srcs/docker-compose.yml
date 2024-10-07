@@ -83,6 +83,18 @@ services:
       - wordpress:/var/www/web
     networks:
       - inception
+  portainer:
+    image: portainer:user
+    container_name: portainer
+    build: ./requirements/bonus/portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "12000:9000"
+      - "12001:9443"
+    privileged: true
+    networks:
+      - inception
 
 volumes:
   mariadb:
