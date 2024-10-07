@@ -28,7 +28,7 @@ logs:
 
 clean:
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) down --volumes --remove-orphans
-	@docker rmi -f mariadb:user nginx:user wordpress:user redis:user ftp:user staticpage:user || true
+	@docker rmi -f mariadb:user nginx:user wordpress:user redis:user ftp:user staticpage:user adminer:user || true
 	@sudo rm -rf $(WP_DATA) $(DB_DATA)
 
 re: clean up
