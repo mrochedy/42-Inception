@@ -16,8 +16,8 @@ chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 cd /var/www/web
-chmod -R 755 /var/www/web/
-chown -R www-data:www-data /var/www/web
+chmod -R 755 .
+chown -R www-data:www-data .
 
 ping_mariadb_container() {
 	nc -zv mariadb 3306 > /dev/null
@@ -25,7 +25,7 @@ ping_mariadb_container() {
 }
 
 start_time=$(date +%s)
-end_time=$((start_time + 30))
+end_time=$((start_time + 60))
 while [ $(date +%s) -lt $end_time ]; do
 	ping_mariadb_container
 	if [ $? -eq 0 ]; then
@@ -51,9 +51,7 @@ wp plugin install redis-cache --activate --allow-root
 wp config set WP_REDIS_HOST "redis" --allow-root
 wp redis enable --allow-root
 
-if grep -q '/run/php/php7.4-fpm.sock' /etc/php/7.4/fpm/pool.d/www.conf; then
-	sed -i 's@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
-fi
+sed -i 's@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf
 
 mkdir -p /run/php
 /usr/sbin/php-fpm7.4 -F
