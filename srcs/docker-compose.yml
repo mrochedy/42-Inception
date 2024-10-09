@@ -90,11 +90,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "12000:9000"
-      - "12001:9443"
+      - "9443:9443"
     privileged: true
     networks:
       - inception
+    restart: on-failure
 
 volumes:
   mariadb:
