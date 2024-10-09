@@ -10,4 +10,4 @@ RUN wget https://github.com/portainer/portainer/releases/download/2.21.2/portain
 	tar -xzf portainer-2.21.2-linux-amd64.tar.gz && \
 	rm portainer-2.21.2-linux-amd64.tar.gz
 
-CMD ["/var/www/web/portainer/portainer", "-H", "unix:///var/run/docker.sock"]
+ENTRYPOINT ["/var/www/web/portainer/portainer", "-H", "unix:///var/run/docker.sock"]
