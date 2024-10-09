@@ -19,15 +19,10 @@ cd /var/www/web
 chmod -R 755 .
 chown -R www-data:www-data .
 
-ping_mariadb_container() {
-	nc -zv mariadb 3306 > /dev/null
-	return $?
-}
-
 start_time=$(date +%s)
 end_time=$((start_time + 60))
 while [ $(date +%s) -lt $end_time ]; do
-	ping_mariadb_container
+	nc -zv mariadb 3306 > /dev/null
 	if [ $? -eq 0 ]; then
 		echo "MariaDB is up and running."
 		break
@@ -42,12 +37,26 @@ if [ $(date +%s) -ge $end_time ]; then
 	exit 1
 fi
 
-wp core download --allow-root
-wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWD" --allow-root
-wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_A_NAME" --admin_password="$WP_A_PASSWD" --admin_email="$WP_A_EMAIL" --allow-root
-wp user create "$WP_U_NAME" "$WP_U_EMAIL" --user_pass="$WP_U_PASSWD" --role="$WP_U_ROLE" --allow-root
+if [ ! -f /var/www/web/wp-load.php ]; then
+	wp core download --allow-root
+	wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWD" --allow-root
+	wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_A_NAME" --admin_password="$WP_A_PASSWD" --admin_email="$WP_A_EMAIL" --allow-root
+	wp user create "$WP_U_NAME" "$WP_U_EMAIL" --user_pass="$WP_U_PASSWD" --role="$WP_U_ROLE" --allow-root
+else
+	echo "WordPress files already exist, skipping wordpress config."
+fi
 
-wp plugin install redis-cache --activate --allow-root
+if ! wp plugin is-installed redis-cache --allow-root; then
+	wp plugin install redis-cache --activate --allow-root
+else
+	echo "Redis plugin is already installed."
+	if ! wp plugin is-active redis-cache --allow-root; then
+		wp plugin activate redis-cache --allow-root
+	else
+		echo "Redis plugin is already activated."
+	fi
+fi
+
 wp config set WP_REDIS_HOST "redis" --allow-root
 wp redis enable --allow-root
 
