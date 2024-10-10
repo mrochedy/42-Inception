@@ -7,6 +7,7 @@ RUN apt-get update -y && \
 COPY ./conf/ /
 
 RUN chmod +x /ftp-config.sh && \
+	mkdir -p /var/www/web && \
 	mkdir -p /var/run/vsftpd/empty
 
-ENTRYPOINT ["./ftp-config.sh"]
+ENTRYPOINT ["/ftp-config.sh"]

@@ -8,4 +8,4 @@ COPY ./conf/mariadb-config.sh /mariadb-config.sh
 
 RUN chmod +x /mariadb-config.sh
 
-ENTRYPOINT ["./mariadb-config.sh"]
+ENTRYPOINT ["/mariadb-config.sh"]

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   mariadb:
-    image: mariadb:user
+    image: mariadb:latest
     container_name: mariadb
     build: ./requirements/mariadb
     volumes:
@@ -13,7 +13,7 @@ services:
       - inception
     restart: on-failure
   nginx:
-    image: nginx:user
+    image: nginx:latest
     container_name: nginx
     build: ./requirements/nginx
     ports:
@@ -21,25 +21,25 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www/web
+      - web:/var/www/web
     networks:
       - inception
     restart: on-failure
   wordpress:
-    image: wordpress:user
+    image: wordpress:latest
     container_name: wordpress
     build: ./requirements/wordpress
     depends_on:
       - mariadb
     volumes:
-      - wordpress:/var/www/web
+      - web:/var/www/web
     env_file:
       - .env
     networks:
       - inception
     restart: on-failure
   redis:
-    image: redis:user
+    image: redis:latest
     container_name: redis
     build: ./requirements/bonus/redis
     depends_on:
@@ -48,7 +48,7 @@ services:
       - inception
     restart: on-failure
   ftp:
-    image: ftp:user
+    image: ftp:latest
     container_name: ftp
     build: ./requirements/bonus/ftp
     depends_on:
@@ -57,34 +57,34 @@ services:
       - "21:21"
       - "8130-8140:8130-8140"
     volumes:
-      - wordpress:/var/www/web
+      - web:/var/www/web
     env_file:
       - .env
     networks:
       - inception
     restart: on-failure
   staticpage:
-    image: staticpage:user
+    image: staticpage:latest
     container_name: staticpage
     build: ./requirements/bonus/staticpage/
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www/web
+      - web:/var/www/web
     networks:
       - inception
   adminer:
-    image: adminer:user
+    image: adminer:latest
     container_name: adminer
     build: ./requirements/bonus/adminer/
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www/web
+      - web:/var/www/web
     networks:
       - inception
   portainer:
-    image: portainer:user
+    image: portainer:latest
     container_name: portainer
     build: ./requirements/bonus/portainer
     volumes:
@@ -104,8 +104,8 @@ volumes:
       device: /home/mrochedy/data/mariadb
       o: bind
       type: none
-  wordpress:
-    name: wordpress
+  web:
+    name: web
     driver: local
     driver_opts:
       device: /home/mrochedy/data/web

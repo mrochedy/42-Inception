@@ -8,4 +8,4 @@ COPY ./conf/wordpress-config.sh /wordpress-config.sh
 
 RUN chmod +x /wordpress-config.sh
 
-ENTRYPOINT ["./wordpress-config.sh"]
+ENTRYPOINT ["/wordpress-config.sh"]

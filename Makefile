@@ -2,14 +2,14 @@ CMD = docker-compose
 FLAGS = -f
 COMPOSE_PATH = ./srcs/docker-compose.yml
 
-WP_DATA = /home/mrochedy/data/web
+WEB_DATA = /home/mrochedy/data/web
 DB_DATA = /home/mrochedy/data/mariadb
 
 all: up
 
 up:
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) build
-	@mkdir -p $(WP_DATA) $(DB_DATA)
+	@mkdir -p $(WEB_DATA) $(DB_DATA)
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) up -d
 
 stop:
@@ -23,8 +23,8 @@ logs:
 
 fclean:
 	@$(CMD) $(FLAGS) $(COMPOSE_PATH) down --volumes --remove-orphans
-	@docker rmi -f mariadb:user nginx:user wordpress:user redis:user ftp:user staticpage:user adminer:user portainer:user || true
-	@sudo rm -rf $(WP_DATA) $(DB_DATA)
+	@docker rmi -f mariadb:latest nginx:latest wordpress:latest redis:latest ftp:latest staticpage:latest adminer:latest portainer:latest || true
+	@sudo rm -rf $(WEB_DATA) $(DB_DATA)
 
 re: fclean up
 
