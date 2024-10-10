@@ -7,9 +7,9 @@ services:
     build: ./requirements/mariadb
     volumes:
       - mariadb:/var/lib/mysql
-    env_file :
+    env_file:
       - .env
-    networks :
+    networks:
       - inception
     restart: on-failure
   nginx:
@@ -33,7 +33,7 @@ services:
       - mariadb
     volumes:
       - wordpress:/var/www/web
-    env_file :
+    env_file:
       - .env
     networks:
       - inception
@@ -101,16 +101,16 @@ volumes:
     name: mariadb
     driver: local
     driver_opts:
-      device: /home/${USER}/data/mariadb
-      o : bind
-      type : none
+      device: /home/mrochedy/data/mariadb
+      o: bind
+      type: none
   wordpress:
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/${USER}/data/web
-      o : bind
-      type : none
+      device: /home/mrochedy/data/web
+      o: bind
+      type: none
 
 networks:
   inception:
