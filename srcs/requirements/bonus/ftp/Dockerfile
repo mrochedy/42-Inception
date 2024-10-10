@@ -9,4 +9,4 @@ COPY ./conf/ /
 RUN chmod +x /ftp-config.sh && \
 	mkdir -p /var/run/vsftpd/empty
 
-ENTRYPOINT ["bash", "/ftp-config.sh"]
+ENTRYPOINT ["./ftp-config.sh"]
