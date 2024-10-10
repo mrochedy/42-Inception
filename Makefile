@@ -2,8 +2,8 @@ CMD = docker-compose
 FLAGS = -f
 COMPOSE_PATH = ./srcs/docker-compose.yml
 
-WP_DATA = /home/$(USER)/data/web
-DB_DATA = /home/$(USER)/data/mariadb
+WP_DATA = /home/mrochedy/data/web
+DB_DATA = /home/mrochedy/data/mariadb
 
 all: up
 
