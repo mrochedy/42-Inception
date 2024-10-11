@@ -28,4 +28,6 @@ fclean:
 
 re: fclean up
 
-.PHONY: all up stop start logs fclean re
+bonus: all
+
+.PHONY: all up stop start logs fclean re bonus
